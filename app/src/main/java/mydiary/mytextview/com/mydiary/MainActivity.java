@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -33,8 +34,23 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
 
+                if(!editText.getText().toString().equals("")){
+                    String data = editText.getText().toString();
+                    writeToFile(data);
+                }
+                else
+                {
+                    Toast.makeText(getApplicationContext(), "Please enter Text ", Toast.LENGTH_SHORT).show();
+                }
             }
         });
+
+        if(readFromFile() != null)
+            editText.setText(readFromFile());
+        else{
+
+        }
+
     }
 
     private void writeToFile(String myData){
@@ -59,7 +75,7 @@ public class MainActivity extends AppCompatActivity{
 
             if (inputStream != null) {
                 InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-                BufferedReader bufferedReader = new BufferedReader();
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
                 String tempString = "";
                 StringBuilder stringBuilder = new StringBuilder();
 
@@ -73,7 +89,7 @@ public class MainActivity extends AppCompatActivity{
             }
 
         }catch(FileNotFoundException e){
-            Log.v("MyActivity" + "File not found", e.toString());
+            Log.v("MyActivity", "File not found" + e.toString());
         }catch (IOException e) {
             e.printStackTrace();
         }
